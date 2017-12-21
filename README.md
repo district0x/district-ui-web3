@@ -10,15 +10,14 @@ Include `[district.ui.web3]` in your CLJS file, where you use `mount/start`
 
 **Warning:** district0x modules are still in early stages, therefore API can change in a future.
 
-## Usage
+## district.ui.web3
+This namespace contains web3 [mount](https://github.com/tolitius/mount) module. Once you start mount, it'll take care of web3
+initialisation and will put results into re-frame db.
+
 You can pass following args to initiate this module: 
 * `:url` Url of Ethereum node to connect to
 * `:wait-for-inject-ms` Sometimes web3 isn't injected quickly enough by browser extension before an app starts. If it's not, this module will try
 to load it on second try after given milliseconds. Default: 1500 
-
-## district.ui.web3
-This namespace contains web3 [mount](https://github.com/tolitius/mount) module. Once you start mount, it'll take care of web3
-initialisation and will put results into re-frame db. 
 
 ```clojure
   (ns my-district.core

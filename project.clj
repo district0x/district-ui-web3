@@ -9,6 +9,8 @@
                  [org.clojure/clojurescript "1.9.946"]
                  [re-frame "0.10.2"]]
 
+  :doo {:paths {:karma "./node_modules/karma/bin/karma"}}
+
   :npm {:devDependencies [[karma "1.7.1"]
                           [karma-chrome-launcher "2.2.0"]
                           [karma-cli "1.0.1"]

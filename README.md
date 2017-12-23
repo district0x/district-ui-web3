@@ -5,7 +5,7 @@
 Clojurescript [mount](https://github.com/tolitius/mount) + [re-frame](https://github.com/Day8/re-frame) module for a district UI, that takes care of setting up and providing [web3](https://github.com/ethereum/web3.js/) instance.
 
 ## Installation
-Add `[district0x/district-ui-web3 "1.0.0"]` into your project.clj  
+Add `[district0x/district-ui-web3 "1.0.1"]` into your project.clj  
 Include `[district.ui.web3]` in your CLJS file, where you use `mount/start`
 
 **Warning:** district0x modules are still in early stages, therefore API can change in a future.
@@ -57,12 +57,12 @@ re-frame events provided by this module:
 #### `::start [opts]`
 Event fired at mount start.
 
-#### `::load-web3 [opts]`
+#### `::create-web3 [opts]`
 Will create and save web3 instance, either by using one injected from a browser extension (e.g [MetaMask](https://metamask.io/)),
 if available, or will create one from given `:url`. Normally you don't need to use this event, as it's fired by `::start`.
 
-#### `::web3-loaded [opts]`
-Event fired when web3 is loaded. Use this event to hook into event flow from your modules.  
+#### `::web3-created [opts]`
+Event fired when web3 is created. Use this event to hook into event flow from your modules.  
 One example using [re-frame-forward-events-fx](https://github.com/Day8/re-frame-forward-events-fx) may look like this: 
 
 ```clojure
@@ -75,7 +75,7 @@ One example using [re-frame-forward-events-fx](https://github.com/Day8/re-frame-
   ::my-event
   (fn []
     {:register :my-forwarder
-     :events #{::web3-events/web3-loaded}
+     :events #{::web3-events/web3-created}
      :dispatch-to [::do-something]}))
 ```
 

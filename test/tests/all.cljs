@@ -29,7 +29,7 @@
                     :wait-for-inject-ms 100}})
         (mount/start))
 
-      (wait-for [::events/web3-loaded]
+      (wait-for [::events/web3-created]
         (is (not (nil? @web3)))
         (= "https://mainnet.infura.io/" (aget (web3/current-provider @web3) "host"))
         (is (false? @web3-injected?))))))

@@ -8,7 +8,21 @@ Clojurescript [mount](https://github.com/tolitius/mount) + [re-frame](https://gi
 Add `[district0x/district-ui-web3 "1.0.1"]` into your project.clj  
 Include `[district.ui.web3]` in your CLJS file, where you use `mount/start`
 
+## API Overview
+
 **Warning:** district0x modules are still in early stages, therefore API can change in a future.
+
+- [district.ui.web3](#districtuiweb3)
+- [district.ui.web3.subs](#districtuiweb3subs)
+  - [::web3](#web3-sub)
+  - [::web3-injected?](#web3-injected?-sub)
+- [district.ui.web3.events](#districtuiweb3events)
+  - [::create-web3](#create-web3)
+  - [::web3-created](#web3-created)
+- [district.ui.web3.queries](#districtuiweb3queries)
+  - [web3](#web3)
+  - [web3-injected?](#web3-injected?)
+  - [assoc-web3](#assoc-web3)
 
 ## district.ui.web3
 This namespace contains web3 [mount](https://github.com/tolitius/mount) module. Once you start mount, it'll take care of web3
@@ -32,10 +46,10 @@ to load it on second try after given milliseconds. Default: 1500
 ## district.ui.web3.subs
 re-frame subscriptions provided by this module:
 
-#### `::web3`
+#### <a name="web3-sub">`::web3`
 Returns web3 instance.
 
-#### `::web3-injected?`
+#### <a name="web3-injected?-sub">`::web3-injected?`
 Returns true if web3 was injected by browser extension, such as MetaMask. 
 
 ```clojure
@@ -54,14 +68,11 @@ Returns true if web3 was injected by browser extension, such as MetaMask.
 ## district.ui.web3.events
 re-frame events provided by this module:
 
-#### `::start [opts]`
-Event fired at mount start.
-
-#### `::create-web3 [opts]`
+#### <a name="create-web3">`::create-web3 [opts]`
 Will create and save web3 instance, either by using one injected from a browser extension (e.g [MetaMask](https://metamask.io/)),
 if available, or will create one from given `:url`. Normally you don't need to use this event, as it's fired by `::start`.
 
-#### `::web3-created [opts]`
+#### <a name="web3-created">`::web3-created [opts]`
 Event fired when web3 is created. Use this event to hook into event flow from your modules.  
 One example using [re-frame-forward-events-fx](https://github.com/Day8/re-frame-forward-events-fx) may look like this: 
 
@@ -79,18 +90,15 @@ One example using [re-frame-forward-events-fx](https://github.com/Day8/re-frame-
      :dispatch-to [::do-something]}))
 ```
 
-#### `::stop`
-Cleanup event fired on mount stop.
-
 ## district.ui.web3.queries
 DB queries provided by this module:  
 *You should use them in your events, instead of trying to get this module's 
 data directly with `get-in` into re-frame db.*
 
-#### `web3 [db]`
+#### <a name="web3">`web3 [db]`
 Returns web3 instance.
 
-#### `web3-injected? [db]`
+#### <a name="web3-injected?">`web3-injected? [db]`
 Returns true if web3 was injected by browser extension, such as MetaMask.
 
 ```clojure
@@ -106,12 +114,8 @@ Returns true if web3 was injected by browser extension, such as MetaMask.
       {:dispatch [::do-other-thing]})))
 ```
 
-#### `assoc-web3 [db {:keys [:web3 :web3-injected?]}]`
+#### <a name="assoc-web3">`assoc-web3 [db {:keys [:web3 :web3-injected?]}]`
 Associates this module and returns new re-frame db.
-
-#### `dissoc-web3 [db]`
-Cleans up this module from re-frame db. 
-
 
 ## Development
 ```bash

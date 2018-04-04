@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/district0x/district-ui-web3.svg?branch=master)](https://travis-ci.org/district0x/district-ui-web3)
 
-Clojurescript [mount](https://github.com/tolitius/mount) + [re-frame](https://github.com/Day8/re-frame) module for a district UI, that takes care of setting up and providing [web3](https://github.com/ethereum/web3.js/) instance.
+Clojurescript [re-mount](https://github.com/district0x/d0x-INFRA/blob/master/re-mount.md) module, that takes care of setting up and providing [web3](https://github.com/ethereum/web3.js/) instance.
 
 ## Installation
 Add `[district0x/district-ui-web3 "1.0.1"]` into your project.clj  

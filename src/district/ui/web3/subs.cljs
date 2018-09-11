@@ -10,3 +10,7 @@
 (reg-sub
   ::web3-injected?
   queries/web3-injected?)
+
+(reg-sub
+  ::web3-legacy?
+  queries/web3-legacy?)

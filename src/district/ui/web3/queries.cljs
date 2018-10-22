@@ -6,6 +6,9 @@
 (defn web3-injected? [db]
   (-> db :district.ui.web3 :web3-injected?))
 
+(defn web3-legacy? [db]
+  (-> db :district.ui.web3 :web3-legacy?))
+
 (defn assoc-web3 [db {:keys [:web3 :web3-injected?] :as params}]
   (assoc db :district.ui.web3 params))
 

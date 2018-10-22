@@ -12,9 +12,16 @@
   "The old method of retrieving the current ethereum provider exposed
   it at `window.web3.currentProvider`..
 
-  Note: This changed in EIP-1102 to require authorization, and moved
-  the partial provider into `window.ethereum`."
+  Notes:
+
+  - This changed in EIP-1102 to require authorization, and moved the
+  partial provider into `window.ethereum`.
+
+  - Can assume it isn't legacy when window.ethereum exists."
   []
-  (and
-   (web3-injected?)
-   (aget js/window "web3" "currentProvider")))
+  (not (some-> js/window .-ethereum)))
+
+
+(defn is-chrome? []
+  (boolean (some-> js/window .-chrome .-webstore)))
+

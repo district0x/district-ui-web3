@@ -70,11 +70,3 @@
    (when-let [web3 (queries/web3 db)]
      (web3/reset web3))
    {:db (queries/dissoc-web3 db)}))
-
-
-
-
-
-
-
-

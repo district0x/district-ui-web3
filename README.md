@@ -5,12 +5,13 @@
 Clojurescript [re-mount](https://github.com/district0x/d0x-INFRA/blob/master/re-mount.md) module, that takes care of setting up and providing [web3](https://github.com/ethereum/web3.js/) instance.
 
 ## Installation
-Add `[district0x/district-ui-web3 "1.0.1"]` into your project.clj  
+Add `[district0x/district-ui-web3 "1.1.0"]` into your project.clj  
 Include `[district.ui.web3]` in your CLJS file, where you use `mount/start`
 
 ## API Overview
 
-**Warning:** district0x modules are still in early stages, therefore API can change in a future.
+**Warning:** district0x modules are still in their early stages, therefore
+the API may change in the future.
 
 - [district.ui.web3](#districtuiweb3)
 - [district.ui.web3.subs](#districtuiweb3subs)
@@ -50,7 +51,8 @@ re-frame subscriptions provided by this module:
 Returns web3 instance.
 
 #### <a name="web3-injected?-sub">`::web3-injected?`
-Returns true if web3 was injected by browser extension, such as MetaMask. 
+Returns true if web3 was injected by browser extension, such as
+MetaMask. 
 
 ```clojure
 (ns my-district.home-page
@@ -65,12 +67,31 @@ Returns true if web3 was injected by browser extension, such as MetaMask.
         [:div "This browser didn't inject web3 instance"]))))
 ```
 
+#### <a name="web3-legacy?-sub">`::web3-legacy?`
+Returns true if the current browser uses the legacy method of
+retrieving the web3 instance. This is true for browsers that are not
+implementing EIP-1102.
+
+
 ## district.ui.web3.events
 re-frame events provided by this module:
 
-#### <a name="create-web3">`::create-web3 [opts]`
+#### <a name="create-web3">`::create-web3-legacy [opts]`
 Will create and save web3 instance, either by using one injected from a browser extension (e.g [MetaMask](https://metamask.io/)),
-if available, or will create one from given `:url`. Normally you don't need to use this event, as it's fired by `::start`.
+if available, or will create one from given `:url`. Normally you don't
+need to use this event, as it's fired by `::start` while in legacy-mode.
+
+
+#### <a name="create-web3">`::create-web3 [opts]`
+This will first call `window.ethereum.enable()` and depending on the
+extension's implementation, will prompt the user if they would like to
+allow the ethereum provider. If accepted, it will create and save the
+web3 instance (e.g [MetaMask](https://metamask.io/)).
+
+If the browser does not support EIP-1102, or the ethereum provider is
+denied, it will fallback to using `::create-web3-legacy` which will
+attempt to instantiate a personal web3 instance.
+
 
 #### <a name="web3-created">`::web3-created [opts]`
 Event fired when web3 is created. Use this event to hook into event flow from your modules.  
@@ -114,7 +135,12 @@ Returns true if web3 was injected by browser extension, such as MetaMask.
       {:dispatch [::do-other-thing]})))
 ```
 
-#### <a name="assoc-web3">`assoc-web3 [db {:keys [:web3 :web3-injected?]}]`
+#### <a name="web3-legacy?">`web3-legacy? [db]`
+Returns true if the browser is using the legacy implementation of
+resolving an ethereum provider. Note that this can mean that the
+browser does not have an extension that resolves an ethereum provider.
+
+#### <a name="assoc-web3">`assoc-web3 [db {:keys [:web3 :web3-injected? :web3-legacy?]}]`
 Associates this module and returns new re-frame db.
 
 ## Development

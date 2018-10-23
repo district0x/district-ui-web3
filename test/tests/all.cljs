@@ -38,9 +38,8 @@
       (is (= "https://mainnet.infura.io/" (aget (web3/current-provider @web3) "host")))
       ;; Assume Metamask Chrome Extension is running when using chrome-karma
       (is (true? (is-chrome?)))
-      (is (true? @web3-injected?))
-      ;; Latest version of metamask uses EIP-1102
-      (is (false? @web3-legacy?))))))
+      (is (false? @web3-injected?))
+      (is (true? @web3-legacy?))))))
 
 
 (deftest invalid-params-tests

@@ -2,7 +2,7 @@
 
 
 (defn web3-injected?
-  "Determines if the legacy `web3` object has been injected by an
+  "Determines if the `web3` object has been injected by an
   ethereum provider."
   []
   (boolean (aget js/window "web3")))

@@ -15,9 +15,9 @@
 (defn supports-ethereum-provider?
   "Determines whether the browser has the window.ethereum object. All
   browsers are encouraged to implement this object with the method
-  `.enable` to invoke an authorization dialog as defined by EIP-1102."
+  `.send` to invoke an authorization dialog as defined by EIP-1102."
   []
-  (some-> js/window .-ethereum .-enable))
+  (some-> js/window .-ethereum .-send))
 
 
 (defn full-provider

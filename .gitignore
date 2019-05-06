@@ -16,3 +16,4 @@ pom.xml.asc
 /figwheel_server.log
 /tests-output/
 /district-ui-web3.iml
+package-lock.json

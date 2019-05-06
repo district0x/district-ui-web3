@@ -37,7 +37,7 @@
       (is (not (nil? @web3)))
       (is (= "https://mainnet.infura.io/" (aget (web3/current-provider @web3) "host")))
       ;; Assume Metamask Chrome Extension is running when using chrome-karma
-      (is (true? (is-chrome?)))
+      ;; (is (true? (is-chrome?))) ;; Does not work anymore, chromium is not chrome
       (is (false? @web3-injected?))
       (is (true? @web3-legacy?))))))
 

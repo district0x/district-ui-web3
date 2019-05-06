@@ -28,13 +28,17 @@
 ;;
 ;; - ::authorize-ethereum-provider does not handle the legacy
 ;;   implementation, which can be handled in the :on-legacy dispatch.
+;;
+;; - EIP-1102 previously called ethereum.enable(), this has since been
+;;   deprecated. The new method is to call
+;;   ethereum.send("eth_requestAccounts")
 
 (reg-fx
   ::authorize-ethereum-provider
   (fn [{:keys [:on-accept :on-reject :on-error :on-legacy]}]
    (cond
     (eth-provider/supports-ethereum-provider?)
-    (doto (-> js/window .-ethereum .enable) ;; js/Promise
+    (doto (-> js/window .-ethereum (.send "eth_requestAccounts")) ;; js/Promise
       (.then
        #(dispatch (conj on-accept %1))
        #(dispatch (conj on-reject %1))))

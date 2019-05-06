@@ -5,7 +5,7 @@
 Clojurescript [re-mount](https://github.com/district0x/d0x-INFRA/blob/master/re-mount.md) module, that takes care of setting up and providing [web3](https://github.com/ethereum/web3.js/) instance.
 
 ## Installation
-Add `[district0x/district-ui-web3 "1.1.0"]` into your project.clj  
+Add `[district0x/district-ui-web3 "1.2.0"]` into your project.clj  
 Include `[district.ui.web3]` in your CLJS file, where you use `mount/start`
 
 ## API Overview
@@ -17,12 +17,16 @@ the API may change in the future.
 - [district.ui.web3.subs](#districtuiweb3subs)
   - [::web3](#web3-sub)
   - [::web3-injected?](#web3-injected?-sub)
+  - [::web3-legacy?](#web3-legacy?-sub)
 - [district.ui.web3.events](#districtuiweb3events)
   - [::create-web3](#create-web3)
   - [::web3-created](#web3-created)
+- [district.ui.web3.effects](#districtuiweb3effects)
+  - [::authorize-ethereum-provider](#web3-ui-effects-authorize-ethereum-provider)
 - [district.ui.web3.queries](#districtuiweb3queries)
   - [web3](#web3)
   - [web3-injected?](#web3-injected?)
+  - [web3-legacy?](#web3-legacy?)
   - [assoc-web3](#assoc-web3)
 
 ## district.ui.web3
@@ -53,6 +57,9 @@ Returns web3 instance.
 #### <a name="web3-injected?-sub">`::web3-injected?`
 Returns true if web3 was injected by browser extension, such as
 MetaMask. 
+
+#### <a name="web3-legacy?-sub">`::web3-legacy?`
+Returns true if legacy web3 is available.
 
 ```clojure
 (ns my-district.home-page
@@ -111,6 +118,50 @@ One example using [re-frame-forward-events-fx](https://github.com/Day8/re-frame-
      :dispatch-to [::do-something]}))
 ```
 
+## district.ui.web3.effects
+re-frame effects provided this module:
+
+#### <a name="district-ui-web3-effects-authorize-ethereum-provider">`::authorize-ethereum-provider`
+[EIP-1102](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1102.md)
+provides web3 providers with the ability to enable a privacy-mode. The
+`::authorize-ethereum-provider` effect is necessary to ask for the
+correct permissions while users have privacy-mode enabled.
+
+##### Keyword Parameters
+
+:on-accept - If the ethereum provider is accepted, dispatches the
+provided event.
+
+:on-reject - If the ethereum provider is rejected, dispatches the
+provided event.
+
+:on-error - If there is no ethereum provider, and no legacy provider,
+dispatches the provided event
+
+:on-legacy - If there is no ethereum provider, and a legacy provider,
+dispatches the provided event
+
+##### Example
+
+```clojure
+(reg-event-fx
+  ::init-web3
+  interceptors
+  (fn [{:keys [:db]} [{:keys [:url] :as opts}]]
+    {::effects/authorize-ethereum-provider
+     {:on-accept [::create-web3]
+      :on-reject [::create-web3-legacy opts]
+      :on-error [::create-web3-legacy opts]
+      :on-legacy [::create-web3-legacy opts]}}))
+
+```
+
+##### Notes
+
+- The ::authorize-ethereum-provider is automatically dispatched within
+  the `re-mount` cycle.
+
+
 ## district.ui.web3.queries
 DB queries provided by this module:  
 *You should use them in your events, instead of trying to get this module's 
@@ -121,6 +172,9 @@ Returns web3 instance.
 
 #### <a name="web3-injected?">`web3-injected? [db]`
 Returns true if web3 was injected by browser extension, such as MetaMask.
+
+#### <a name="web3-legacy?">`web3-legacy? [db]`
+Returns true if legacy web3 is available.
 
 ```clojure
 (ns my-district.events

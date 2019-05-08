@@ -4,6 +4,10 @@
    [district.ui.web3.ethereum-provider :as eth-provider]
    [district.ui.web3.utils :as utils :refer [web3-legacy?]]))
 
+(defn authorize []
+  (let [eth-send (aget js/window "ethereum" "send")]
+    (eth-send "eth_requestAccounts")))
+
 ;;
 ;; ::authorize-ethereum-provider
 ;;
@@ -38,7 +42,7 @@
   (fn [{:keys [:on-accept :on-reject :on-error :on-legacy]}]
    (cond
     (eth-provider/supports-ethereum-provider?)
-    (doto (-> js/window .-ethereum (.send "eth_requestAccounts")) ;; js/Promise
+    (doto (authorize) ;; js/Promise
       (.then
        #(dispatch (conj on-accept %1))
        #(dispatch (conj on-reject %1))))

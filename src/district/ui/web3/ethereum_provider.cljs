@@ -17,7 +17,7 @@
   browsers are encouraged to implement this object with the method
   `.send` to invoke an authorization dialog as defined by EIP-1102."
   []
-  (aget js/window "ethereum" "send"))
+  (some-> js/window (aget "ethereum") (aget "send")))
 
 
 (defn full-provider

@@ -11,7 +11,7 @@
        (eth-send "eth_requestAccounts")
        (js/Promise.reject "No ethereum send fn")))
     (catch js/Error e
-      (js/Promise.reject (stre "Error when calling eth_requestAccounts" e)))))
+      (js/Promise.reject (str "Error when calling eth_requestAccounts" e)))))
 
 ;;
 ;; ::authorize-ethereum-provider

@@ -1,6 +1,6 @@
 (ns tests.all
   (:require
-    [cljs-web3.core :as web3]
+    [cljs-web3-next.core :as web3]
     [cljs.spec.alpha :as s]
     [cljs.test :refer [deftest is testing run-tests async use-fixtures]]
     [day8.re-frame.test :refer [run-test-async wait-for]]
@@ -22,11 +22,11 @@
 
 (deftest tests
   (run-test-async
-   
+
    (let [web3 (subscribe [::subs/web3])
          web3-injected? (subscribe [::subs/web3-injected?])
          web3-legacy? (subscribe [::subs/web3-legacy?])]
-     
+
      (-> (mount/with-args
            {:web3 {:url "https://mainnet.infura.io/"
                    :wait-for-inject-ms 100}})

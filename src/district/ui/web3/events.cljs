@@ -1,6 +1,6 @@
 (ns district.ui.web3.events
   (:require
-    [cljs-web3.core :as web3]
+    [cljs-web3-next.core :as web3]
     [district.ui.web3.queries :as queries]
     [re-frame.core :refer [reg-event-fx trim-v]]
     [district.ui.web3.effects :as effects]

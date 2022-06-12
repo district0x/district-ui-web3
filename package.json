@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "karma": "6.3.0",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-cli": "2.0.0",
+    "karma-cljs-test": "0.1.0",
+    "shadow-cljs": "2.19.3"
+  },
+  "version": "1.22.19"
+}

@@ -1,6 +1,7 @@
 (ns district.ui.web3.events
   (:require
     [cljs-web3-next.core :as web3]
+    ["web3" :as w3]
     [district.ui.web3.queries :as queries]
     [re-frame.core :refer [reg-event-fx trim-v]]
     [district.ui.web3.effects :as effects]
@@ -10,6 +11,9 @@
 
 (def interceptors [trim-v])
 
+(defn get-web3-instance
+  ([] (get-web3-instance (eth-provider/full-provider)))
+  ([provider-or-url] (new w3 provider-or-url)))
 
 (reg-event-fx
   ::start
@@ -36,7 +40,7 @@
   ::create-web3
   interceptors
   (fn [{:keys [:db]}]
-   (let [web3 (new (aget js/window "Web3") (eth-provider/full-provider))
+   (let [web3 (get-web3-instance)
          result {:web3 web3
                  :web3-injected? (web3-injected?)
                  :web3-legacy? (web3-legacy?)}]
@@ -49,7 +53,7 @@
  interceptors
  (fn [{:keys [:db]} [{:keys [:url]}]]
    (let [web3 (if (web3-injected?)
-                (new (aget js/window "Web3") (web3/current-provider (aget js/window "web3")))
+                (new w3 (web3/current-provider (aget js/window "web3")))
                 (web3/create-web3 url))
          result {:web3 web3
                  :web3-injected? (web3-injected?)

@@ -198,10 +198,11 @@ browser does not have an extension that resolves an ethereum provider.
 Associates this module and returns new re-frame db.
 
 ## Development
-```bash
-lein deps
 
-# To run tests and rerun on changes
-export CHROME_BIN=`which chromium-browser`
-lein doo chrome-headless tests
-```
+1. Browser tests
+  - `npx shadow-cljs watch test-browser`
+  - Open http://d0x-vm:6502 in browser (gets re-compiled & refreshed on each test change)
+2. CI tests (via Karma)
+  - export CHROME_BIN=`which chromium-browser`
+  - `npx shadow-cljs compile test-ci`
+  - `npx karma start --single-run`

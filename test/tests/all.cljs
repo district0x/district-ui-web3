@@ -39,12 +39,12 @@
 (deftest invalid-params-tests
   (is (thrown? :default (-> (mount/with-args
                               {:web3 {:url nil}})
-                          (mount/start)))))
+                            (mount/start)))))
 
 
 (deftest invalid-params-tests2
   (is (thrown? :default (-> (mount/with-args
                               {:web3 {:url "https://mainnet.infura.io/"
                                       :wait-for-inject-ms "a"}})
-                          (mount/start)))))
+                            (mount/start)))))
 

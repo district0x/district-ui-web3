@@ -11,10 +11,8 @@
 
 (def interceptors [trim-v])
 
-(defn get-web3-instance
-  ([] (get-web3-instance (eth-provider/full-provider)))
-  ([provider-or-url] (new w3 provider-or-url)))
-
+; opts - can have 2 keys: :wait-for-inject-ms and :url (Ethereum node URL, e.g.
+;        where Truffle is running)
 (reg-event-fx
   ::start
   interceptors
@@ -30,34 +28,29 @@
   interceptors
   (fn [{:keys [:db]} [{:keys [:url] :as opts}]]
     {::effects/authorize-ethereum-provider
-     {:on-accept [::create-web3]
-      :on-reject [::create-web3-legacy opts]
-      :on-error [::create-web3-legacy opts]
-      :on-legacy [::create-web3-legacy opts]}}))
+     {:on-accept [::create-web3-with-user-permitted-provider opts]
+      :on-reject [::create-web3-from-url opts]
+      :on-error [::create-web3-from-url opts]}}))
 
 
 (reg-event-fx
-  ::create-web3
+  ::create-web3-with-user-permitted-provider
   interceptors
-  (fn [{:keys [:db]}]
-   (let [web3 (get-web3-instance)
-         result {:web3 web3
-                 :web3-injected? (web3-injected?)
-                 :web3-legacy? (web3-legacy?)}]
+  (fn [{:keys [:db]} [opts user-permitted-provider]]
+    (println "::create-web3-with-user-permitted-provider" opts user-permitted-provider)
+   (let [url (:url opts)
+         web3 (web3/create-web3 user-permitted-provider url)
+         result {:web3 web3 :url url}]
      {:db (queries/assoc-web3 db result)
       :dispatch [::web3-created result]})))
 
 
 (reg-event-fx
- ::create-web3-legacy
+ ::create-web3-from-url
  interceptors
  (fn [{:keys [:db]} [{:keys [:url]}]]
-   (let [web3 (if (web3-injected?)
-                (new w3 (web3/current-provider (aget js/window "web3")))
-                (web3/create-web3 url))
-         result {:web3 web3
-                 :web3-injected? (web3-injected?)
-                 :web3-legacy? (web3-legacy?)}]
+   (let [web3-instance (web3/create-web3 nil url)
+         result {:web3 web3-instance :url url}]
      {:db (queries/assoc-web3 db result)
       :dispatch [::web3-created result]})))
 

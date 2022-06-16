@@ -6,4 +6,5 @@
                  :ns-regexp "tests.(.+)"
                  :test-dir "out/browser-tests"}
   :test-ci {:target :karma
+            :ns-regexp "tests.(.+)"
             :output-to "out/karma-tests.js"}}}

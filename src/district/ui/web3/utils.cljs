@@ -20,8 +20,3 @@
   - Can assume it isn't legacy when window.ethereum exists."
   []
   (not (some-> js/window .-ethereum)))
-
-
-(defn is-chrome? []
-  (boolean (some-> js/window .-chrome .-webstore)))
-

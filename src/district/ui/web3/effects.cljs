@@ -17,6 +17,8 @@
 ;; ::authorize-ethereum-provider
 ;;
 ;; Attempts to authorize an ethereum provider as proposed in EIP-1102
+;; When done first time, this requires user interaction (therefore not suitable for CI tests)
+;; If succeeds (user gives permission e.g. in MetaMask), will emit event with the now authorized provider `window.ethereum`
 ;;
 ;; Keyword Parameters:
 ;;
@@ -28,15 +30,10 @@
 ;;
 ;; :on-error - If there is no ethereum provider, and no legacy provider, dispatches the provided event
 ;;
-;; :on-legacy - If there is no ethereum provider, and a legacy provider, dispatches the provided event
-;;
 ;; Notes:
 ;;
 ;; - :on-accept doesn't include the full ethereum provider. This can
 ;;   be found at (aget js/window "ethereum")
-;;
-;; - ::authorize-ethereum-provider does not handle the legacy
-;;   implementation, which can be handled in the :on-legacy dispatch.
 ;;
 ;; - EIP-1102 previously called ethereum.enable(), this has since been
 ;;   deprecated. The new method is to call
@@ -44,14 +41,7 @@
 
 (reg-fx
   ::authorize-ethereum-provider
-  (fn [{:keys [:on-accept :on-reject :on-error :on-legacy]}]
-    (cond
-    (eth-provider/supports-ethereum-provider?)
-    (doto (authorize) ;; js/Promise
-      (.then
-       #(dispatch (conj on-accept %1))
-       #(dispatch (conj on-reject %1))))
-    (web3-legacy?)
-    (dispatch on-legacy)
-    :else
-    (dispatch on-error))))
+  (fn [{:keys [:on-accept :on-reject :on-error]}]
+    (if (eth-provider/supports-ethereum-provider?)
+      (.then (authorize) #(dispatch (conj on-accept (eth-provider/full-provider))) #(dispatch (conj on-reject %1)))
+      (dispatch on-error))))

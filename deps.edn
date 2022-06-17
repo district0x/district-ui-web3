@@ -1,0 +1,18 @@
+{:paths ["src" "test"]
+ :mvn/repos {"central" {:url "https://repo1.maven.org/maven2/"}
+             "clojars" {:url "https://clojars.org/repo"}}
+
+ :deps {org.clojure/clojure       {:mvn/version "1.11.1"}
+        thheller/shadow-cljs {:mvn/version "2.19.3"}
+        ; is.mad/cljs-web3-next {:mvn/version "0.0.6"}
+        io.github.district0x/cljs-web3-next {:mvn/version "0.2.0-SNAPSHOT"}
+        mount/mount {:mvn/version "0.1.16"}
+        day8.re-frame/test {:mvn/version "0.1.5"}}
+
+ :install-deps true
+ :aliases {:build {:deps {io.github.clojure/tools.build {:tag "v0.8.1" :sha "7d40500"}
+                          slipset/deps-deploy {:mvn/version "RELEASE"}}
+                   :ns-default build}
+           :deploy {:replace-deps {slipset/deps-deploy {:mvn/version "RELEASE"}}
+                    :exec-fn deps-deploy.deps-deploy/deploy
+                    :exec-args {:installer :remote :artifact "target/district-ui-web3-1.3.3.jar"}}}}

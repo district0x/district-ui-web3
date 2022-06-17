@@ -1,7 +1,7 @@
 (ns district.ui.web3
   (:require
     [cljs.spec.alpha :as s]
-    [cljsjs.web3]
+    ["web3"]
     [district.ui.web3.events :as events]
     [mount.core :as mount :refer [defstate]]
     [re-frame.core :refer [dispatch-sync]]))

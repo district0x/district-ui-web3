@@ -1,7 +1,7 @@
 (ns district.ui.web3.ethereum-provider
- " 
+ "
   Implements functions for authorizing the ethereum provider, as defined by proposal EIP-1102.
-  
+
   Blog Post Outlining Functionality (outdated implementation, but explains the proposal):
   https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
 
@@ -22,7 +22,7 @@
 
 (defn full-provider
   "Retrieves the full ethereum provider.
-   
+
   Notes:
 
   - Full provider only exists after it has been enabled through

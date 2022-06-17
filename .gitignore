@@ -17,3 +17,6 @@ pom.xml.asc
 /tests-output/
 /district-ui-web3.iml
 package-lock.json
+out
+.shadow-cljs
+.cpcache

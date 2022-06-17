@@ -5,7 +5,7 @@
 Clojurescript [re-mount](https://github.com/district0x/d0x-INFRA/blob/master/re-mount.md) module, that takes care of setting up and providing [web3](https://github.com/ethereum/web3.js/) instance.
 
 ## Installation
-Add `[district0x/district-ui-web3 "1.2.0"]` into your project.clj  
+Add `[district0x/district-ui-web3 "1.2.0"]` into your project.clj
 Include `[district.ui.web3]` in your CLJS file, where you use `mount/start`
 
 ## API Overview
@@ -33,10 +33,10 @@ the API may change in the future.
 This namespace contains web3 [mount](https://github.com/tolitius/mount) module. Once you start mount, it'll take care of web3
 initialisation and will put results into re-frame db.
 
-You can pass following args to initiate this module: 
+You can pass following args to initiate this module:
 * `:url` Url of Ethereum node to connect to
 * `:wait-for-inject-ms` Sometimes web3 isn't injected quickly enough by browser extension before an app starts. If it's not, this module will try
-to load it on second try after given milliseconds. Default: 1500 
+to load it on second try after given milliseconds. Default: 1500
 
 ```clojure
   (ns my-district.core
@@ -56,7 +56,7 @@ Returns web3 instance.
 
 #### <a name="web3-injected?-sub">`::web3-injected?`
 Returns true if web3 was injected by browser extension, such as
-MetaMask. 
+MetaMask.
 
 #### <a name="web3-legacy?-sub">`::web3-legacy?`
 Returns true if legacy web3 is available.
@@ -101,15 +101,15 @@ attempt to instantiate a personal web3 instance.
 
 
 #### <a name="web3-created">`::web3-created [opts]`
-Event fired when web3 is created. Use this event to hook into event flow from your modules.  
-One example using [re-frame-forward-events-fx](https://github.com/Day8/re-frame-forward-events-fx) may look like this: 
+Event fired when web3 is created. Use this event to hook into event flow from your modules.
+One example using [re-frame-forward-events-fx](https://github.com/Day8/re-frame-forward-events-fx) may look like this:
 
 ```clojure
 (ns my-district.events
     (:require [district.ui.web3.events :as web3-events]
               [re-frame.core :refer [reg-event-fx]]
               [day8.re-frame.forward-events-fx]))
-              
+
 (reg-event-fx
   ::my-event
   (fn []
@@ -163,8 +163,8 @@ dispatches the provided event
 
 
 ## district.ui.web3.queries
-DB queries provided by this module:  
-*You should use them in your events, instead of trying to get this module's 
+DB queries provided by this module:
+*You should use them in your events, instead of trying to get this module's
 data directly with `get-in` into re-frame db.*
 
 #### <a name="web3">`web3 [db]`
@@ -198,9 +198,11 @@ browser does not have an extension that resolves an ethereum provider.
 Associates this module and returns new re-frame db.
 
 ## Development
-```bash
-lein deps
 
-# To run tests and rerun on changes
-lein doo chrome tests
-```
+1. Browser tests
+  - `npx shadow-cljs watch test-browser`
+  - Open http://d0x-vm:6502 in browser (gets re-compiled & refreshed on each test change)
+2. CI tests (via Karma)
+  - export CHROME_BIN=`which chromium-browser`
+  - `npx shadow-cljs compile test-ci`
+  - `npx karma start --single-run`

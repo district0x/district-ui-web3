@@ -1,9 +1,8 @@
 (ns build
   (:require [clojure.tools.build.api :as b]
-            [deps-deploy.deps-deploy :as dd]))
+            [deps-deploy.deps-deploy :as dd]
+            [lib-version :refer [lib version]]))
 
-(def lib 'io.github.district0x/district-ui-web3) ; ends up as <group-id>/<artifact-id> in pom.xml
-(def version "1.3.3-SNAPSHOT")
 (def class-dir "target/classes")
 (def basis (b/create-basis {:project "deps.edn"}))
 (def jar-file (format "target/%s-%s.jar" (name lib) version))

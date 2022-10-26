@@ -5,7 +5,7 @@
   "Determines if the `web3` object has been injected by an
   ethereum provider."
   []
-  (boolean (aget js/window "web3")))
+  (boolean (or (aget js/window "ethereum" ) (aget js/window "web3"))))
 
 
 (defn web3-legacy?
